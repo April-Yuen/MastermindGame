@@ -1,0 +1,17 @@
+
+<h4>Please pick 4 numbers between 0-7. Find the right combination of numbers to win the game!</h4>
+<h4>You will be given 10 guesses!</h4>
+
+
+
+<%- targetNumbers%>
+
+<form action="/game/postGuess" method="POST">
+    <input type="text" id="guessNum" name="guessNum" class="form-control" placeholder="Enter a guess number">
+    <button type="submit" id="guessNum">Submit</button>
+</form>
+
+<%-hints %>
+
+<%-guessNums %>
+
