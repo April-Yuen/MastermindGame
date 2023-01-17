@@ -2,10 +2,6 @@ const axios = require("axios")
 const User = require("../models/User")
 const Game = require("../models/Game")
 
-// find the current object id being displayed? 
-// send that through the main.js as json
-// then push the elements into the correct game. 
-
 let targetNumbersArray 
 let gameId
 module.exports = {
@@ -39,25 +35,32 @@ module.exports = {
         }
     },
     // Save a guess in the database. 
-    postGuess: async(req, res) => {
-        let guessCount = 0
+    postGuessAndHints: async(req, res) => {
+        let userId = req.user.id
         let guessLimit = 10
         let correctLocation = 0
         let correctNumber = 0
         try {
             const guessNum = req.body.guessNum
-            guessCount++
             guessNumArray = guessNum.split("")
             console.log(guessNumArray)
-            console.log(gameId)
             const game = await Game.findById(gameId)
             let arrGuess = game.guess
             arrGuess.push(guessNum)
             await game.save()
             let arrHints = game.hint
-            let numberGuessRemaining = guessLimit-guessCount
+            console.log(arrHints)
+            let numberGuessRemaining = guessLimit-game.guess.length
+            let user = await User.findById(userId)
+            let userScore= user.userScore
+            console.log(user)
             if(guessNumArray.join("") === targetNumbersArray.join("")){
                 arrHints.push("All correct!")
+                userScore++
+                await user.save()
+                console.log(userScore)
+                const winGameNote = "All correct! You won!"
+                res.render("winGame",{winGameNote: winGameNote})
             }
             for(let i = 0; i < guessNumArray.length; i++){
                 if(guessNumArray[i]===targetNumbersArray[i]){
@@ -67,25 +70,47 @@ module.exports = {
                     correctNumber++
                 }
             }
+            if(numberGuessRemaining <= 0){
+                const loseGameNote = "Game Over. Do you want to play again?"
+                res.render("loseGame", {loseGameNote: loseGameNote})
+            }
             arrHints.push(`${correctNumber} correct numbers and ${correctLocation} correct locations`)
             await game.save()
-            res.render("mainGame", {numberGuessRemaining: numberGuessRemaining, hints: game.hint, guessNums: game.guess})
+            console.log(game.hint)
+            console.log(game.guess)
+            res.render("hintsAndGuesses", {guessNums: game.guess, hints: game.hint, numberGuessRemaining: numberGuessRemaining})
         } catch (error) {
             console.log(error)
         }
     },
-    // display the hints and guesses
-    // I want to take the hints, the for loop, and the conditionals and place them in their own function. 
-    getHintsAndGuesses: async(req, res) => {
+    postScore: async(req, res) => {
+        let userScore
         try {
             const game = await Game.findById(gameId)
-            let arrHints = game.hint
-            let guessNumsArray = game.guess[game.guess.length-1].split("")
-
+            let gameHintArr = game.hint
+            console.log(gameHintArr)
+            if(gameHintArr.includes("All correct!")){
+                userScore = await User.findByIdAndUpdate(
+                    {_id: req.user.id},
+                    {
+                        $inc: {userScore: 1}
+                    }
+                );
+            }
+            console.log("Score+1")
         } catch (error) {
-            
+            console.log(error)
+        }
+    },
+    getScore: async(req, res) => {
+        try {
+            const users = await User.find().sort({userScore: -1})
+            console.log(users)
+            res.render("scoreBoard", {users: users})
+        } catch (error) {
+         
         }
     }
-}
+}   
 
 
