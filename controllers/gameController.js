@@ -49,8 +49,8 @@ module.exports = {
         let correctLocation = 0
         let correctNumber = 0
         try {
-            // post the Number Guessed to the database. 
-            const game = await Game.findOne().sort({ createdAt: -1 })
+            // post the Number Guessed to the database. If adding multiple players maybe need to query by latest game and the userId. 
+            const game = await Game.findOne({userId}).sort({ createdAt: -1 })
             const guessNum = req.body.guessNum
             guessNumArray = guessNum.split("")
             console.log(guessNumArray)
