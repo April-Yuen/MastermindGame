@@ -21,7 +21,7 @@ module.exports = {
             console.log(game)
             let gameHints = game.hint
             let gameGuesses = game.guess
-            // I need to fix the guess length. It's going into negative numbers. 
+            // I need to fix the guess length. It's going into negative numbers b/c I am missding the you lost render. 
             let numberGuessRemaining = guessLimit-game.guess.length
             res.render('mainGame', {gameHints: gameHints, gameGuesses: gameGuesses, numberGuessRemaining: numberGuessRemaining} )  
         } catch (error) {
