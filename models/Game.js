@@ -16,6 +16,11 @@ const gameSchema = new mongoose.Schema({
     guessCount: {
         type: Number
     },
+    createdAt: {
+        type: Date, 
+        required: true, 
+        default: Date.now
+    },
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
