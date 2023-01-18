@@ -14,8 +14,16 @@ module.exports = {
 
     // get the main game page
     getMainGame: async(req, res) => {
+        let userId = req.user.id
+        let guessLimit = 0
         try {
-            res.render('mainGame', )  
+            const game = await Game.findOne({userId}).sort({ createdAt: -1 })
+            console.log(game)
+            let gameHints = game.hint
+            let gameGuesses = game.guess
+            // I need to fix the guess length. It's going into negative numbers. 
+            let numberGuessRemaining = guessLimit-game.guess.length
+            res.render('mainGame', {gameHints: gameHints, gameGuesses: gameGuesses, numberGuessRemaining: numberGuessRemaining} )  
         } catch (error) {
             console.error(error)
         }
@@ -37,7 +45,7 @@ module.exports = {
                 user: req.user.id
             })  
             gameId = game._id  
-            res.render('mainGame', {targetNumbers: targetNumbers})  
+            res.redirect('mainGame')  
         } catch (error) {
             console.error(error)
         }
@@ -101,7 +109,7 @@ module.exports = {
             await game.save()
             console.log(game.hint)
             console.log(game.guess)
-            res.render("hintsAndGuesses", {guessNums: game.guess, hints: game.hint, numberGuessRemaining: numberGuessRemaining})
+            res.redirect("mainGame")
         } catch (error) {
             console.log(error)
         }
