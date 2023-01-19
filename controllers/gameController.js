@@ -11,19 +11,24 @@ module.exports = {
             console.log(error)
         }
     },
-
     // get the main game page
     getMainGame: async(req, res) => {
         let userId = req.user.id
-        let guessLimit = 0
+        let guessLimit = 10
+        const infoErrorsObj = req.flash('infoErrors')
         try {
+            // find the current game being played.
             const game = await Game.findOne({userId}).sort({ createdAt: -1 })
             console.log(game)
             let gameHints = game.hint
             let gameGuesses = game.guess
-            // I need to fix the guess length. It's going into negative numbers b/c I am missding the you lost render. 
+            // check to see how many guesses are remaining. 
             let numberGuessRemaining = guessLimit-game.guess.length
-            res.render('mainGame', {gameHints: gameHints, gameGuesses: gameGuesses, numberGuessRemaining: numberGuessRemaining} )  
+            if(numberGuessRemaining <= 0){
+                const loseGameNote = "Game Over. Do you want to play again?"
+                res.render("loseGame", {loseGameNote: loseGameNote})
+            }
+            res.render('mainGame', {gameHints: gameHints, gameGuesses: gameGuesses, numberGuessRemaining: numberGuessRemaining, infoErrorsObj} )  
         } catch (error) {
             console.error(error)
         }
@@ -53,63 +58,60 @@ module.exports = {
     // Save a guess in the database. 
     postGuessAndHints: async(req, res) => {
         let userId = req.user.id
-        let guessLimit = 10
         let correctLocation = 0
         let correctNumber = 0
         try {
-            // post the Number Guessed to the database. If adding multiple players maybe need to query by latest game and the userId. 
+            // post the Number Guessed to the database. Find the game, turn the guess number into an array so that I can find the location. 
             const game = await Game.findOne({userId}).sort({ createdAt: -1 })
             const guessNum = req.body.guessNum
-            guessNumArray = guessNum.split("")
-            console.log(guessNumArray)
-            let arrGuess = game.guess
-            arrGuess.push(guessNum)
-            await game.save()
-            // Post the hints to the database. 
-            let arrHints = game.hint
-            console.log(arrHints)
-            // figuring out how many guesses are remaining.
-            let numberGuessRemaining = guessLimit-game.guess.length
-            // Updating the user's score
-            let user = await User.findById(userId)
-            let userScore= user.userScore
-            console.log(user)
-            // conditional statement to find if user won.
-            const targetNumbersArray = game.targetNumber
-            if(guessNumArray.join("") === targetNumbersArray.join("")){
-                arrHints.push("All correct!")
-                userScore = await User.findByIdAndUpdate(
-                    {_id: req.user.id},
-                    {
-                        $inc: {userScore: 1}
-                    }
-                );
-                await user.save()
-                console.log(userScore)
-                const winGameNote = "All correct! You won!"
-                res.render("winGame",{winGameNote: winGameNote})
-            }
-            // calculate the number of correct locations and the number of correct Numbers. 
-            ////////////////////////////////////////////////////////////
-            for(let i = 0; i < guessNumArray.length; i++){
-                if(guessNumArray[i]===targetNumbersArray[i]){
-                    correctLocation++
-                    correctNumber++
-                }else if(guessNumArray.includes(targetNumbersArray[i])){
-                    correctNumber++
+            // Conditional to flash error messages and prevent user from inputting wrong keys. 
+            if(isNaN(guessNum) || guessNum.length > 4){
+                req.flash("infoErrors", "Please enter numbers. Please enter only 4 numbers.")
+                res.redirect("mainGame")
+            }else{
+                guessNumArray = guessNum.split("")
+                console.log(guessNumArray)
+                let arrGuess = game.guess
+                arrGuess.push(guessNum)
+                await game.save()
+                // Post the hints to the database. 
+                let arrHints = game.hint
+                console.log(arrHints)
+                // Find the user score. 
+                let user = await User.findById(userId)
+                let userScore= user.userScore
+                console.log(user)
+                // conditional statement to find if user won.
+                const targetNumbersArray = game.targetNumber
+                if(guessNumArray.join("") === targetNumbersArray.join("")){
+                    arrHints.push("All correct!")
+                    userScore = await User.findByIdAndUpdate(
+                        {_id: req.user.id},
+                        {
+                            $inc: {userScore: 1}
+                        }
+                    );
+                    await user.save()
+                    console.log(userScore)
+                    const winGameNote = "All correct! You won!"
+                    res.render("winGame",{winGameNote: winGameNote})
                 }
+                //calculate the number of correct locations and the number of correct Numbers. 
+                /////////////////////////////////////////////////////////
+                for(let i = 0; i < guessNumArray.length; i++){
+                    if(guessNumArray[i]===targetNumbersArray[i]){
+                        correctLocation++
+                        correctNumber++
+                    }else if(guessNumArray.includes(targetNumbersArray[i])){
+                        correctNumber++
+                    }
+                }
+                arrHints.push(`${correctNumber} correct numbers and ${correctLocation} correct locations`)
+                await game.save()
+                console.log(game.hint)
+                console.log(game.guess)
+                res.redirect("mainGame")
             }
-            // Stop the guessing when the person as more than 10 guesses.
-            //////////////////////////////////////////////////////////////////////
-            if(numberGuessRemaining <= 0){
-                const loseGameNote = "Game Over. Do you want to play again?"
-                res.render("loseGame", {loseGameNote: loseGameNote})
-            }
-            arrHints.push(`${correctNumber} correct numbers and ${correctLocation} correct locations`)
-            await game.save()
-            console.log(game.hint)
-            console.log(game.guess)
-            res.redirect("mainGame")
         } catch (error) {
             console.log(error)
         }

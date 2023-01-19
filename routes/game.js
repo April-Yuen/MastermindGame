@@ -6,6 +6,7 @@ router.get("/mainGame", gameController.getMainGame);
 router.get("/randomNumbers", gameController.getRandomNumbers)
 router.get("/playNewGame", gameController.getPlayNewGame)
 router.post("/postGuessAndHints", gameController.postGuessAndHints);
+// router.post("/postWinner", gameController.postWinner)
 router.get("/getScore", gameController.getScore)
 
 

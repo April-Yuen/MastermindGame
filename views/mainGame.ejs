@@ -3,7 +3,11 @@
 <h4>You will be given 10 guesses!</h4>
 
 
-
+<% if(infoErrorsObj != "") {%>
+    <div class="col-8 alert alert-danger" role="alert">
+        <%= infoErrorsObj%>
+    </div>
+<% } %>
 
 <form action="/game/postGuessAndHints" method="POST">
     <input type="text" id="guessNum" name="guessNum" class="form-control" placeholder="Enter a guess number">
