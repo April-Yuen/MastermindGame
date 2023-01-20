@@ -102,7 +102,7 @@ module.exports = {
                     if(guessNumArray[i]===targetNumbersArray[i]){
                         correctLocation++
                         correctNumber++
-                    }else if(guessNumArray.includes(targetNumbersArray[i])){
+                    }else if(guessNumArray.includes(targetNumbersArray[i]) && targetNumbersArray.indexOf(targetNumbersArray[i]) === targetNumbersArray.lastIndexOf(targetNumbersArray[i])){
                         correctNumber++
                     }
                 }
