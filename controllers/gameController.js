@@ -1,6 +1,7 @@
 const axios = require("axios")
 const User = require("../models/User")
 const Game = require("../models/Game")
+const Utils = require("../utils/utils")
 
 
 module.exports = {
@@ -58,18 +59,16 @@ module.exports = {
     // Save a guess in the database. 
     postGuessAndHints: async(req, res) => {
         let userId = req.user.id
-        let correctLocation = 0
-        let correctNumber = 0
         try {
             // post the Number Guessed to the database. Find the game, turn the guess number into an array so that I can find the location. 
             const game = await Game.findOne({userId}).sort({ createdAt: -1 })
             const guessNum = req.body.guessNum
             // Conditional to flash error messages and prevent user from inputting wrong keys. 
             if(isNaN(guessNum) || guessNum.length > 4){
-                req.flash("infoErrors", "Please enter numbers. Please enter only 4 numbers.")
+                req.flash("infoErrors", "Please enter only 4 numbers.")
                 res.redirect("mainGame")
             }else{
-                guessNumArray = guessNum.split("")
+                const guessNumArray = guessNum.split("").map(num => Number(num))
                 console.log(guessNumArray)
                 let arrGuess = game.guess
                 arrGuess.push(guessNum)
@@ -96,17 +95,10 @@ module.exports = {
                     const winGameNote = "All correct! You won!"
                     res.render("winGame",{winGameNote: winGameNote})
                 }
-                //calculate the number of correct locations and the number of correct Numbers. 
+                //calculate the number of correct locations and the number of correct Numbers using util helper functions
                 /////////////////////////////////////////////////////////
-                for(let i = 0; i < guessNumArray.length; i++){
-                    if(guessNumArray[i]===targetNumbersArray[i]){
-                        correctLocation++
-                        correctNumber++
-                    }else if(guessNumArray.includes(targetNumbersArray[i]) && targetNumbersArray.indexOf(targetNumbersArray[i]) === targetNumbersArray.lastIndexOf(targetNumbersArray[i])){
-                        correctNumber++
-                    }
-                }
-                arrHints.push(`${correctNumber} correct numbers and ${correctLocation} correct locations`)
+                const hint = Utils.findLocationAndNum(guessNumArray, targetNumbersArray)
+                arrHints.push(hint)
                 await game.save()
                 console.log(game.hint)
                 console.log(game.guess)
