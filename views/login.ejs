@@ -1,12 +1,72 @@
 <main class="container">
     <div class="row justify-content-center">
-      <section class="col-6 mt-5">
+    
+      <section class="col-8 mt-5">
         <% if (locals.messages.errors) { %> <% messages.errors.forEach( el => { %>
         <div class="alert alert-danger"><%= el.msg %></div>
         <% }) %> <% } %> <% if (locals.messages.info) { %> <%
         messages.info.forEach( el => { %>
         <div class="alert alert-info"><%= el.msg %></div>
         <% }) %> <% } %>
+        
+        <% /* %>
+        <section class="vh-100">
+              <div class="container-fluid h-custom">
+                <div class="row d-flex justify-content-center align-items-center h-100">
+                  <div class="col-md-9 col-lg-6 col-xl-5">
+                    <img src="/img/mastermindPic.png"
+                      class="img-fluid" alt="Sample image">
+                  </div>
+                  <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+                    <form>
+                      <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
+                        <p class="lead fw-normal mb-2 me-3">Login</p>
+                      </div>
+
+                    <form action="/login" method="POST">
+                      <div class="form-outline mb-4">
+                        <label for="exampleInputEmail1" class="form-label"
+                          >Email address</label
+                          >
+                        <input
+                        type="email"
+                        class="form-control"
+                        id="exampleInputEmail1"
+                        aria-describedby="emailHelp"
+                        name="email"
+                        />
+                      </div>
+            
+                     
+                      <div class="form-outline mb-3">
+                        <label for="exampleInputPassword1" class="form-label">Password</label>
+                        <input
+                        type="password"
+                        class="form-control"
+                        id="exampleInputPassword1"
+                        name="password"
+                        />
+                      </div>
+
+                      <div class="text-center text-lg-start mt-4 pt-2">
+                        <button type="submit" class="btn btn-primary btn-lg"
+                          style="padding-left: 2.5rem; padding-right: 2.5rem;">Login</button>
+
+                        <p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account? <a href="/signup"
+                            class="link-danger">Sign up</a></p>
+                      </div>
+
+                  <div class="d-flex flex-column flex-md-row text-center text-md-start justify-content-between py-4 px-4 px-xl-5 bg-primary">
+                    <div class="text-white mb-3 mb-md-0">
+                      Mastermind
+                    </div>
+                  </div>
+
+                </section>
+              </form>
+            </main>
+            <% */ %>
+        
         <form action="/login" method="POST">
           <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label"
@@ -33,5 +93,6 @@
         </form>
       </section>
     </div>
-  </main>
+    </form>
+   
 

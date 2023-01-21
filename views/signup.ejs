@@ -1,6 +1,6 @@
 <main class="container">
     <div class="row justify-content-center">
-        <section class="col-6 mt-5">
+        <section class="col-8 mt-5">
             <% if (locals.messages.errors) { %>
                 <% messages.errors.forEach( el => { %>
                     <div class="alert alert-danger"><%= el.msg %></div>
@@ -11,7 +11,85 @@
                     <div class="alert alert-info"><%= el.msg %></div>
                 <% }) %>    
             <% } %>
-            <form action="/signup" method="POST">
+          
+            <section class="vh-100">
+              <div class="container-fluid h-custom">
+                <div class="row d-flex justify-content-center align-items-center h-100">
+                  <div class="col-md-9 col-lg-6 col-xl-5">
+                    <img src="/img/mastermindPic.png"
+                      class="img-fluid" alt="Sample image">
+                  </div>
+                  <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+                    <form>
+                      <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
+                        <p class="lead fw-normal mb-2 me-3">Sign Up</p>
+          
+                      </div>
+                    <form action="/signup" method="POST">
+                      <!-- Username input -->
+                      <div class="form-outline mb-4">
+                          <input type="text" id="userName" class="form-control"
+                            placeholder="Enter a username" name="userName"/>
+                          <label class="form-label" for="userName">Username</label>
+                      </div>
+            
+            
+                      <!-- Email input -->
+                      <div class="form-outline mb-4">
+                        <input type="email" id="exampleInputEmail1" class="form-control"
+                          placeholder="Enter a valid email address" aria-describedby="emailHelp" name="email"/>
+                        <label class="form-label" for="form3Example3">Email address</label>
+                      </div>
+            
+                      <!-- Password input -->
+                      <div class="form-outline mb-3">
+                        <input type="password" id="password" class="form-control"
+                          placeholder="Enter password" name="password" />
+                        <label class="form-label" for="form3Example4">Password</label>
+                      </div>
+
+                      <!-- Confirm passord -->
+                      <div class="form-outline mb-3">
+                          <input type="password" id="confirmPassword" class="form-control"
+                               placeholder="Enter password" name="confirmPassword"/>
+                          <label class="form-label" for="confirmPassword">Confirm Password</label>
+                      </div>
+            
+                      <div class="d-flex justify-content-between align-items-center">
+                       
+            
+                      <div class="text-center text-lg-start mt-4 pt-2">
+                        <button type="submit" class="btn btn-primary btn-lg"
+                          style="padding-left: 2.5rem; padding-right: 2.5rem;">Register</button>
+                        <p class="small fw-bold mt-2 pt-1 mb-0">Already have an account? <a href="/login"
+                            class="link-danger">Login</a></p>
+                      </div>
+            
+                    </form>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="d-flex flex-column flex-md-row text-center text-md-start justify-content-between py-4 px-4 px-xl-5 bg-primary">
+                
+                <div class="text-white mb-3 mb-md-0">
+                  Mastermind
+                </div>
+                
+            
+                
+                <div>
+                  
+                </div>
+               
+              </div>
+            </section>
+          </form>
+
+
+          <!-- My old signup page. -->
+
+            <!-- <form action="/signup" method="POST">
                 <div class="mb-3">
                     <label for="userName" class="form-label">User Name</label>
                     <input type="text" class="form-control" id="userName" name="userName">
@@ -32,5 +110,5 @@
                 <button type="submit" class="btn btn-success">Submit</button>
               </form>
         </section>
-    </div>
+    </div> -->
 </main>
