@@ -13,6 +13,7 @@
             <% } %>
           
             <section class="vh-100">
+              <form action="/signup" method="POST">
               <div class="container-fluid h-custom">
                 <div class="row d-flex justify-content-center align-items-center h-100">
                   <div class="col-md-9 col-lg-6 col-xl-5">
@@ -20,12 +21,10 @@
                       class="img-fluid" alt="Sample image">
                   </div>
                   <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-                    <form>
                       <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
                         <p class="lead fw-normal mb-2 me-3">Sign Up</p>
           
                       </div>
-                    <form action="/signup" method="POST">
                       <!-- Username input -->
                       <div class="form-outline mb-4">
                           <input type="text" id="userName" class="form-control"
@@ -85,30 +84,4 @@
               </div>
             </section>
           </form>
-
-
-          <!-- My old signup page. -->
-
-            <!-- <form action="/signup" method="POST">
-                <div class="mb-3">
-                    <label for="userName" class="form-label">User Name</label>
-                    <input type="text" class="form-control" id="userName" name="userName">
-                  </div>
-                <div class="mb-3">
-                  <label for="exampleInputEmail1" class="form-label">Email address</label>
-                  <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email">
-                  <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-                </div>
-                <div class="mb-3">
-                  <label for="password" class="form-label">Password</label>
-                  <input type="password" class="form-control" id="password" name="password">
-                </div>
-                <div class="mb-3">
-                    <label for="confirmPassword" class="form-label">Confirm Password</label>
-                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword">
-                  </div>
-                <button type="submit" class="btn btn-success">Submit</button>
-              </form>
-        </section>
-    </div> -->
 </main>

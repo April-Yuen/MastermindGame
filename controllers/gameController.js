@@ -65,7 +65,7 @@ module.exports = {
             const guessNum = req.body.guessNum
             // Conditional to flash error messages and prevent user from inputting wrong keys. 
             if(isNaN(guessNum) || guessNum.length > 4){
-                req.flash("infoErrors", "Please enter only 4 numbers.")
+                req.flash("infoErrors", "Please enter only 4 digits.")
                 res.redirect("mainGame")
             }else{
                 const guessNumArray = guessNum.split("").map(num => Number(num))
@@ -114,7 +114,7 @@ module.exports = {
             console.log(users)
             res.render("scoreBoard", {users: users})
         } catch (error) {
-         
+            console.log(error)
         }
     }
 }   

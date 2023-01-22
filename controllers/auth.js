@@ -5,7 +5,7 @@ const User = require("../models/User");
 
 exports.getLogin = (req, res) => {
     if(req.user) {
-        return res.redirect("/game/mainGame");
+        return res.redirect("/game/playNewGame");
     }
     res.render("login", {
         title: "Login",
@@ -41,7 +41,7 @@ exports.postLogin = (req, res, next) => {
           return next(err);
         }
         req.flash("success", { msg: "Success! You are logged in." });
-        res.redirect(req.session.returnTo || "/game/mainGame");
+        res.redirect(req.session.returnTo || "/game/playNewGame");
       });
     })(req, res, next);
   };
@@ -62,7 +62,7 @@ exports.postLogin = (req, res, next) => {
 
 exports.getSignup = (req, res) => {
     if(req.user){
-        return res.redirect("/game/mainGame");
+        return res.redirect("/game/playNewGame");
     }
     res.render("signup", {
         title: "Create Account",
@@ -83,7 +83,7 @@ exports.postSignup = (req, res, next) => {
   
     if (validationErrors.length) {
       req.flash("errors", validationErrors);
-      return res.redirect("../signup");
+      return res.redirect("/signup");
     }
     req.body.email = validator.normalizeEmail(req.body.email, {
       gmail_remove_dots: false,
@@ -105,7 +105,7 @@ exports.postSignup = (req, res, next) => {
           req.flash("errors", {
             msg: "Account with that email address or username already exists.",
           });
-          return res.redirect("../signup");
+          return res.redirect("/signup");
         }
         user.save((err) => {
           if (err) {
@@ -115,7 +115,7 @@ exports.postSignup = (req, res, next) => {
             if (err) {
               return next(err);
             }
-            res.redirect("/game/mainGame");
+            res.redirect("/game/playNewGame");
           });
         });
       }

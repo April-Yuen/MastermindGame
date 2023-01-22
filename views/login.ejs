@@ -9,8 +9,9 @@
         <div class="alert alert-info"><%= el.msg %></div>
         <% }) %> <% } %>
         
-        <% /* %>
+        
         <section class="vh-100">
+          <form action="/login" method="POST">
               <div class="container-fluid h-custom">
                 <div class="row d-flex justify-content-center align-items-center h-100">
                   <div class="col-md-9 col-lg-6 col-xl-5">
@@ -61,38 +62,8 @@
                       Mastermind
                     </div>
                   </div>
-
+                </form>
                 </section>
-              </form>
-            </main>
-            <% */ %>
-        
-        <form action="/login" method="POST">
-          <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label"
-              >Email address</label
-            >
-            <input
-              type="email"
-              class="form-control"
-              id="exampleInputEmail1"
-              aria-describedby="emailHelp"
-              name="email"
-            />
-          </div>
-          <div class="mb-3">
-            <label for="exampleInputPassword1" class="form-label">Password</label>
-            <input
-              type="password"
-              class="form-control"
-              id="exampleInputPassword1"
-              name="password"
-            />
-          </div>
-          <button type="submit" class="btn btn-success">Submit</button>
-        </form>
-      </section>
-    </div>
-    </form>
+          </main>
    
 
