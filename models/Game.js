@@ -2,11 +2,11 @@ const mongoose = require("mongoose")
 
 const gameSchema = new mongoose.Schema({
     targetNumber: {
-        type: [Number],
+        type: [String],
         required: true
     },
     guess: {
-        type: [Number],
+        type: [String],
         required: true
     },
     hint: {

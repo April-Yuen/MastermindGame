@@ -3,11 +3,12 @@ const User = require("../models/User")
 const Game = require("../models/Game")
 const Utils = require("../utils/utils")
 
-
 module.exports = {
     getPlayNewGame: async(req, res) => {
+        let userId = req.user.Id
         try {
-            res.render('playNewGame', {title: "Mastermind-Start Game"})
+            User.findOne({user: userId})
+            res.render('playNewGame', {title: "Mastermind-Start Game", userName: req.user.userName})
         } catch (error) {
             console.log(error)
         }
@@ -15,11 +16,12 @@ module.exports = {
     // get the main game page
     getMainGame: async(req, res) => {
         let userId = req.user.id
+        console.log(userId)
         let guessLimit = 10
         const infoErrorsObj = req.flash('infoErrors')
         try {
             // find the current game being played.
-            const game = await Game.findOne({userId}).sort({ createdAt: -1 })
+            const game = await Game.findOne({user: userId}).sort({ _id: -1 })
             console.log(game)
             let gameHints = game.hint
             let gameGuesses = game.guess
@@ -61,14 +63,16 @@ module.exports = {
         let userId = req.user.id
         try {
             // post the Number Guessed to the database. Find the game, turn the guess number into an array so that I can find the location. 
-            const game = await Game.findOne({userId}).sort({ createdAt: -1 })
+            // const game = await Game.findOne({userId}).sort({ createdAt: -1 })
+            const game = await Game.findOne({user: userId}).sort({ createdAt: -1 })
             const guessNum = req.body.guessNum
+            console.log(guessNum)
             // Conditional to flash error messages and prevent user from inputting wrong keys. 
             if(isNaN(guessNum) || guessNum.length > 4){
                 req.flash("infoErrors", "Please enter only 4 digits.")
                 res.redirect("mainGame")
             }else{
-                const guessNumArray = guessNum.split("").map(num => Number(num))
+                const guessNumArray = guessNum.split("")
                 console.log(guessNumArray)
                 let arrGuess = game.guess
                 arrGuess.push(guessNum)
@@ -93,7 +97,7 @@ module.exports = {
                     await user.save()
                     console.log(userScore)
                     const winGameNote = "All correct! You won!"
-                    res.render("winGame",{winGameNote: winGameNote})
+                    res.render("winGame",{winGameNote: winGameNote, layout: './layouts/win'})
                 }
                 //calculate the number of correct locations and the number of correct Numbers using util helper functions
                 /////////////////////////////////////////////////////////

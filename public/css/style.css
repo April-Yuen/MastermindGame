@@ -15,6 +15,10 @@ height: 100%;
 } */
 
 :root{
-    --bs-font-sans-serif: 'Roboto', sans-serif;;
+    --bs-font-sans-serif: 'Roboto', sans-serif;
 
+}
+
+body{
+    color: #294666;
 }
