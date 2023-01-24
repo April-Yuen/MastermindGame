@@ -12,7 +12,11 @@ module.exports = class Utils {
         }
         if (correctLocation === 0 && correctNumber === 0) {
             return "All incorrect!"
-        } else {
+        }else if(correctLocation === 1 && correctNumber > 1){
+            return `${correctNumber} correct number and ${correctLocation} correct locations`
+        }else if(correctLocation > 1 && correctNumber === 1){
+            return `${correctNumber} correct numbers and ${correctLocation} correct location`
+        }else {
             return `${correctNumber} correct numbers and ${correctLocation} correct locations`
         }
     }

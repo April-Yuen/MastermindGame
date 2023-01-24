@@ -25,13 +25,14 @@ module.exports = {
             console.log(game)
             let gameHints = game.hint
             let gameGuesses = game.guess
+            let targetNumber = game.targetNumber.join("")
             // check to see how many guesses are remaining. 
             let numberGuessRemaining = guessLimit-game.guess.length
             if(numberGuessRemaining <= 0){
-                const loseGameNote = "Game Over. Do you want to play again?"
+                const loseGameNote = `Game Over. The number ${targetNumber} is Do you want to play again?`
                 res.render("loseGame", {loseGameNote: loseGameNote})
             }
-            res.render('mainGame', {gameHints: gameHints, gameGuesses: gameGuesses, numberGuessRemaining: numberGuessRemaining, infoErrorsObj} )  
+            res.render('mainGame', {gameHints: gameHints, gameGuesses: gameGuesses, numberGuessRemaining: numberGuessRemaining, infoErrorsObj, targetNumber: targetNumber} )  
         } catch (error) {
             console.error(error)
         }
@@ -68,7 +69,7 @@ module.exports = {
             const guessNum = req.body.guessNum
             console.log(guessNum)
             // Conditional to flash error messages and prevent user from inputting wrong keys. 
-            if(isNaN(guessNum) || guessNum.length > 4){
+            if(isNaN(guessNum) || guessNum.length > 4 || guessNum.length < 4){
                 req.flash("infoErrors", "Please enter only 4 digits.")
                 res.redirect("mainGame")
             }else{

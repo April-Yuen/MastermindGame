@@ -3,78 +3,59 @@
 <h4 class="text-center my-5">You have 10 chances to guess the number.</h4>
 
 
+<div class="row justify-content-center">
 <% if(infoErrorsObj != "") {%>
-    <div class="col-8 alert alert-danger" role="alert">
+    <div class="text-center col-6 alert alert-danger" role="alert">
         <%= infoErrorsObj%>
     </div>
 <% } %>
-<div class="container d-flex">
-    <div class ="row ">
+</div>
+
+    <div class ="row justify-content-center">
         <div class="col-md-8">
             <div class="form-outline">
                 <form class="form-inline" action="/game/postGuessAndHints" method="POST">
-                    <input type="text" id="guessNum" name="guessNum" class="form-control" placeholder="Guess Numbers">
+                <div class="mx-auto col-2 my-4">
+                        <input type="text" id="guessNum" name="guessNum" class="form-control" placeholder="Guess Numbers">
                 </div>
-            </div>
-                    <div class="col-md-6">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-md-2">
                         <button type="submit" id="guessNum" class="btn btn btn-block btn-primary">Submit</button>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-2">
                         <a href="/game/randomNumbers" class="btn btn btn-block btn-primary">Play New Game</a>
                     </div>
+                </div>
                 </form>
             </div>
-
-
-    <div class="table-responsive">
-        <table class="table table-info table-striped table-hover text-center">
-            <thead>
-                <tr>
-                    <th>Number of Guesses Remaining</th>
-                    <th>Number Guessed</th>
-                    <th>Hints</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr class="align-middle">
-                    <td><%=numberGuessRemaining%></td>
-                    <%for(let i = 0; i <gameGuesses.length; i++) {%>
-                        <tr class="col-sm-6">
-                            <td><%= gameGuesses[i] %></td>
-                        </tr>
-                        <% } %>
-                    <%for(let i = 0; i <gameHints.length; i++) {%>
-                        <tr class="col-sm-6">
-                            <td><%= gameHints[i] %></td>
-                        </tr>
-                        <% } %>
-                </tr>
-            </tbody>
-        </table>
+        </div>
     </div>
-</div>
-
-<% /* %>
-<ul class="list-unstyled">
-    <%for(let i = 0; i <gameGuesses.length; i++) {%>
-        <li class="col-sm-6"><%= gameGuesses[i] %></li>
-        <% } %>
-    
-</ul>
-<ul class="list-unstyled">
-    <%for(let i = 0; i <gameHints.length; i++) {%>
-        <li class="col-sm-6"><%= gameHints[i] %></li>
-        <% } %>
-    
-</ul>
 
 
-
-
-<a href="/game/randomNumbers" class="btn btn btn-block btn-primary">Play New Game</a>
-<% */ %>
-
-
+    <div class="row justify-content-center my-5">
+        <div class="col-3">
+            <ul class="list-unstyled">
+                <li class="text-center fs-5 fw-bold">Guesses Remaining</li>
+                <li class="text-center"><%=numberGuessRemaining%></li>
+            </ul>
+        </div>
+        <div class="col-3">
+          <ul class="list-unstyled">
+            <li class="text-center fs-5 fw-bold">Guess Number</li>
+            <%for(let i = 0; i <gameGuesses.length; i++) {%>
+            <li class="text-center fs-6"><%= gameGuesses[i] %></li>
+            <% } %>
+          </ul>
+        </div>
+        <div class="col-4">
+          <ul class="list-unstyled">
+            <li class="text-center fs-5 fw-bold">Hints</li>
+            <%for(let i = 0; i <gameHints.length; i++) {%>
+            <li class="text-center fs-6"><%= gameHints[i] %></li>
+            <% } %>
+          </ul>
+        </div>
+      </div>
 
 
 
