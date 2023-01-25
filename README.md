@@ -17,11 +17,11 @@ Some extensions I have included is local authorization so that the app can keep 
 ## 💻 Install
 
 - Fork and clone the repository to your local computer.
+- `npm install` to install the required dependencies.
 - Complete and store a `.env` file in the `config` folder.
-- Create a database in MongoDB and connect it to the application by setting the database string in the `.env`. [MongoDB](https://www.mongodb.com/).
+- Create a database in [MongoDB](https://www.mongodb.com/) and connect it to the application by setting the database string in the `.env`. 
 - Set a port to run the application locally. 
-- `npm install` to install the required dependencies. Nodemon is included as a dependency. 
-- And, `npm start` to run the application. 
+- And, Nodemon is included as a dependency. `npm start` to run the application. 
 
 <br>
 
