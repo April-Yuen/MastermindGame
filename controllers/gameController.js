@@ -16,7 +16,6 @@ module.exports = {
     // get the main game page
     getMainGame: async(req, res) => {
         let userId = req.user.id
-        console.log(userId)
         let guessLimit = 10
         const infoErrorsObj = req.flash('infoErrors')
         try {
@@ -46,12 +45,11 @@ module.exports = {
             let randomNumbersAPI = await axios.get(`https://www.random.org/integers/?num=${numberOfDigits}&min=${minNum}&max=${maxNum}&col=1&base=10&format=plain&rnd=new`)
             targetNumbers = randomNumbersAPI.data
             targetNumbersArray = targetNumbers.split("").filter(num => num !== "\n")
-            // saving a new game into the database. 
             let game = await Game.create({
                 targetNumber: targetNumbersArray,
                 user: req.user.id
             })  
-            gameId = game._id  
+            game = game.id
             res.redirect('mainGame')  
         } catch (error) {
             console.error(error)
@@ -63,6 +61,7 @@ module.exports = {
         try {
             // post the Number Guessed to the database. Find the game, turn the guess number into an array so that I can find the location. 
             const game = await Game.findOne({user: userId}).sort({ createdAt: -1 })
+            console.log(game)
             const guessNum = req.body.guessNum
             // Conditional to flash error messages and prevent user from inputting wrong keys. 
             if(isNaN(guessNum) || guessNum.length > 4 || guessNum.length < 4){
