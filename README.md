@@ -9,7 +9,7 @@ Users must guess a combination of 4 numbers between 0-7. I used the Random Gener
 
 **Tech used:** EJS, CSS, Bootstrap, JavaScript, Node, Express, MongoDB, Passport for Local Authentication 
 
-Throughout the process of building this app, my focus was structuring the code using MVC architecture. This allows for better organization and structure of the code. It also makes debugging easier, and it allows others to better understand my code. Therefore, the views folder contains all of my EJS files that will render client side code. 
+Throughout the process of building this app, my focus was structuring the code using MVC architecture. This allows for better organization and structure of the code. It also makes debugging easier, and it allows others to better understand my code. Therefore, the views folder contains all of my EJS files that will render the code. 
 
 
 There is a server.js file that declares the modules, packages, and dependencies I used throughout my application. It also declares the routes I used to set the path for the data that is being created, updated, or read. I have created two different schemas for the models in my database. One is a user schema and the other is a game schema. They are tied together by the user ID. 
