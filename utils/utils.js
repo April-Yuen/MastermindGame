@@ -1,23 +1,22 @@
 module.exports = class Utils {
-        static findLocationAndNum(guessNumArray, targetNumbersArray) {
+       
+    static findLocationAndNum(guessNumArray, targetNumbersArray) {
             let correctLocation = 0
             let correctNumber = 0
             let slicedTarget = [...targetNumbersArray]
+            let allNums = [...slicedTarget]
           
             for (let i = 0; i < guessNumArray.length; i++) {
               const guessedNum = guessNumArray[i];
           
-              if (guessedNum === targetNumbersArray[i]) {
-                correctNumber++
+              if (guessedNum === slicedTarget[i]) {
                 correctLocation++
-                guessNumArray.splice(i,1, 'blank');
-                slicedTarget.splice(i,1, 'blank');
-                }
-              else if (slicedTarget.includes(guessedNum)) {
-                  correctNumber++
-                const idxOfTarget = slicedTarget.indexOf(guessedNum);
-                slicedTarget.splice(idxOfTarget, 1, 'blank');
-                guessNumArray.splice(i, 1, 'blank');      
+              }
+              
+              if (allNums.includes(guessedNum)) {
+                correctNumber++
+                const idx = allNums.indexOf(guessedNum);
+                allNums.splice(idx, 1);
               }
             }
           
