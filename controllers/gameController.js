@@ -22,14 +22,13 @@ module.exports = {
         try {
             // find the current game being played.
             const game = await Game.findOne({user: userId}).sort({ _id: -1 })
-            console.log(game)
             let gameHints = game.hint
             let gameGuesses = game.guess
             let targetNumber = game.targetNumber.join("")
             // check to see how many guesses are remaining. 
             let numberGuessRemaining = guessLimit-game.guess.length
             if(numberGuessRemaining <= 0){
-                const loseGameNote = `Game Over. The number ${targetNumber} is Do you want to play again?`
+                const loseGameNote = `Game Over. The number is ${targetNumber}. Do you want to play again?`
                 res.render("loseGame", {loseGameNote: loseGameNote})
             }
             res.render('mainGame', {gameHints: gameHints, gameGuesses: gameGuesses, numberGuessRemaining: numberGuessRemaining, infoErrorsObj, targetNumber: targetNumber} )  
@@ -47,7 +46,6 @@ module.exports = {
             let randomNumbersAPI = await axios.get(`https://www.random.org/integers/?num=${numberOfDigits}&min=${minNum}&max=${maxNum}&col=1&base=10&format=plain&rnd=new`)
             targetNumbers = randomNumbersAPI.data
             targetNumbersArray = targetNumbers.split("").filter(num => num !== "\n")
-            console.log(targetNumbersArray)
             // saving a new game into the database. 
             let game = await Game.create({
                 targetNumber: targetNumbersArray,
@@ -64,27 +62,22 @@ module.exports = {
         let userId = req.user.id
         try {
             // post the Number Guessed to the database. Find the game, turn the guess number into an array so that I can find the location. 
-            // const game = await Game.findOne({userId}).sort({ createdAt: -1 })
             const game = await Game.findOne({user: userId}).sort({ createdAt: -1 })
             const guessNum = req.body.guessNum
-            console.log(guessNum)
             // Conditional to flash error messages and prevent user from inputting wrong keys. 
             if(isNaN(guessNum) || guessNum.length > 4 || guessNum.length < 4){
                 req.flash("infoErrors", "Please enter only 4 digits.")
                 res.redirect("mainGame")
             }else{
                 const guessNumArray = guessNum.split("")
-                console.log(guessNumArray)
                 let arrGuess = game.guess
                 arrGuess.push(guessNum)
                 await game.save()
                 // Post the hints to the database. 
                 let arrHints = game.hint
-                console.log(arrHints)
                 // Find the user score. 
                 let user = await User.findById(userId)
                 let userScore= user.userScore
-                console.log(user)
                 // conditional statement to find if user won.
                 const targetNumbersArray = game.targetNumber
                 if(guessNumArray.join("") === targetNumbersArray.join("")){
@@ -96,17 +89,13 @@ module.exports = {
                         }
                     );
                     await user.save()
-                    console.log(userScore)
                     const winGameNote = "All correct! You won!"
                     res.render("winGame",{winGameNote: winGameNote, layout: './layouts/win'})
                 }
                 //calculate the number of correct locations and the number of correct Numbers using util helper functions
-                /////////////////////////////////////////////////////////
                 const hint = Utils.findLocationAndNum(guessNumArray, targetNumbersArray)
                 arrHints.push(hint)
                 await game.save()
-                console.log(game.hint)
-                console.log(game.guess)
                 res.redirect("mainGame")
             }
         } catch (error) {
@@ -116,7 +105,6 @@ module.exports = {
     getScore: async(req, res) => {
         try {
             const users = await User.find().sort({userScore: -1})
-            console.log(users)
             res.render("scoreBoard", {users: users})
         } catch (error) {
             console.log(error)
