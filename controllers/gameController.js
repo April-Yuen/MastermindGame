@@ -61,7 +61,6 @@ module.exports = {
         try {
             // post the Number Guessed to the database. Find the game, turn the guess number into an array so that I can find the location. 
             const game = await Game.findOne({user: userId}).sort({ createdAt: -1 })
-            console.log(game)
             const guessNum = req.body.guessNum
             // Conditional to flash error messages and prevent user from inputting wrong keys. 
             if(isNaN(guessNum) || guessNum.length > 4 || guessNum.length < 4){
