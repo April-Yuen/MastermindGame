@@ -65,7 +65,7 @@ module.exports = {
             // Conditional to flash error messages and prevent user from inputting wrong keys. 
             if(isNaN(guessNum) || guessNum.length > 4 || guessNum.length < 4){
                 req.flash("infoErrors", "Please enter only 4 digits.")
-                res.redirect("mainGame")
+                return res.redirect("mainGame")
             }else{
                 const guessNumArray = guessNum.split("")
                 let arrGuess = game.guess
@@ -88,13 +88,14 @@ module.exports = {
                     );
                     await user.save()
                     const winGameNote = "All correct! You won!"
-                    res.render("winGame",{winGameNote: winGameNote, layout: './layouts/win'})
+                    return res.render("winGame",{winGameNote: winGameNote, layout: './layouts/win'})
+                }else{
+                    //calculate the number of correct locations and the number of correct Numbers using util helper functions
+                    const hint = Utils.findLocationAndNum(guessNumArray, targetNumbersArray)
+                    arrHints.push(hint)
+                    await game.save()
+                    return res.redirect("mainGame")
                 }
-                //calculate the number of correct locations and the number of correct Numbers using util helper functions
-                const hint = Utils.findLocationAndNum(guessNumArray, targetNumbersArray)
-                arrHints.push(hint)
-                await game.save()
-                res.redirect("mainGame")
             }
         } catch (error) {
             console.log(error)
