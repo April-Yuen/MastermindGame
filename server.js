@@ -32,7 +32,7 @@ app.use(expressLayouts)
 app.use(logger("dev"))
 app.use(cors())
 
-// app.use(cookieParser('MastermindAppSecure'))
+
 app.use(session({
     secret: "MastermindAppSecretSession",
     saveUninitialized: false, 
